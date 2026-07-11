@@ -565,12 +565,12 @@ function MostImportantThing({ withAnalysis }: { withAnalysis: boolean }) {
     return (
       <Card className="gradient-mint" glow>
         <Label>Most important thing</Label>
-        <h3 className="mt-2 text-xl font-bold">Get your AI portfolio analysis</h3>
+        <h3 className="mt-1.5 text-lg font-bold">Get your AI portfolio analysis</h3>
         <p className="mt-1 text-sm text-muted-foreground">
           Health score, concentration risk, rebalance suggestions and idle-cash drag — in 15
           seconds.
         </p>
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           <PillButton icon={<Sparkles className="size-4" />}>Run analysis</PillButton>
           <PillButton variant="secondary" icon={<Building2 className="size-4" />}>
             Connect brokerage
