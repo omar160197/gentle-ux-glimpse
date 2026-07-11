@@ -469,11 +469,11 @@ function PortfolioSnapshot({ withAnalysis }: { withAnalysis: boolean }) {
             </button>
             <span className="text-[11px] text-muted-foreground">2 portfolios</span>
           </div>
-          <div className="mt-3">
+          <div className="mt-2">
             <div className="text-[11px] uppercase tracking-wider text-muted-foreground">
               Net worth
             </div>
-            <div className="num text-4xl font-bold md:text-5xl">$248,412.30</div>
+            <div className="num text-3xl font-bold md:text-4xl">$248,412.30</div>
             <div className="mt-1 flex items-center gap-2 text-sm">
               <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
                 <TrendingUp className="size-3" /> +$1,284 · +0.52%
@@ -490,16 +490,16 @@ function PortfolioSnapshot({ withAnalysis }: { withAnalysis: boolean }) {
         {withAnalysis ? (
           <HealthRing score={82} />
         ) : (
-          <div className="w-full max-w-[180px] rounded-xl border border-dashed border-border bg-muted/40 p-4 text-center">
+          <div className="w-full max-w-[180px] rounded-xl border border-dashed border-border bg-muted/40 p-3 text-center">
             <Bot className="mx-auto size-5 text-muted-foreground" />
-            <div className="mt-2 text-xs text-muted-foreground">
+            <div className="mt-1 text-xs text-muted-foreground">
               Run analysis for your health score
             </div>
           </div>
         )}
       </div>
 
-      <div className="mt-5">
+      <div className="mt-3">
         <Sparkline up />
       </div>
     </Card>
