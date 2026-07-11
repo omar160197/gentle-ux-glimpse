@@ -225,15 +225,15 @@ function GuestLeft() {
           </span>
           <span className="text-[11px] text-muted-foreground">no signup required</span>
         </div>
-        <h1 className="mt-4 text-4xl font-bold leading-tight md:text-5xl">
+        <h1 className="mt-3 text-3xl font-bold leading-tight md:text-4xl">
           Investing, <span className="text-primary">explained by AI</span>.
         </h1>
-        <p className="mt-3 max-w-xl text-sm text-muted-foreground md:text-base">
+        <p className="mt-2 max-w-xl text-sm text-muted-foreground">
           Pick a starting point. We'll build a portfolio, analyze what you already own, or help
           you plan a goal — plain-English, no jargon.
         </p>
 
-        <div className="mt-6 grid gap-3 sm:grid-cols-3">
+        <div className="mt-4 grid gap-2.5 sm:grid-cols-3">
           <StartTile
             title="I'm new to investing"
             body="Start with a guided path — risk, timeline, portfolio."
