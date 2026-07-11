@@ -472,7 +472,7 @@ function BeginnerLeft() {
         </div>
         <ul className="mt-2 divide-y divide-border/70">
           <Alert
-            icon={<News className="size-4" />}
+            icon={<Newspaper className="size-4" />}
             tint="info"
             title="Fed holds rates; signals 2 cuts in 2026"
             meta="Bond yields ease · S&P futures +0.4%"
