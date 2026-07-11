@@ -26,7 +26,6 @@ import {
   Radar,
   Vote,
   Crown,
-  Newspaper as News,
   BellRing,
 } from "lucide-react";
 
