@@ -287,7 +287,7 @@ function StartTile({
   icon: ReactNode;
 }) {
   return (
-    <button className="group flex h-full flex-col items-start gap-2 rounded-xl border border-border bg-card p-4 text-left transition hover:border-primary/40 hover:shadow-soft">
+    <button className="group flex h-full flex-col items-start gap-1.5 rounded-xl border border-border bg-card p-3 text-left transition hover:border-primary/40 hover:shadow-soft">
       <div className="grid size-8 place-items-center rounded-lg bg-primary/10 text-primary">
         {icon}
       </div>
