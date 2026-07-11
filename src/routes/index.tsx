@@ -203,7 +203,7 @@ function AiDock({ placeholder, chips }: { placeholder: string; chips: string[] }
         {chips.map((c) => (
           <button
             key={c}
-            className="rounded-lg border border-border bg-card/60 px-3 py-1.5 text-xs font-medium text-foreground hover:bg-card"
+            className="rounded-lg border border-border bg-card/60 px-2.5 py-1 text-xs font-medium text-foreground hover:bg-card"
           >
             {c}
           </button>
