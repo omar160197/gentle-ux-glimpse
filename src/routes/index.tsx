@@ -309,14 +309,14 @@ function BeginnerLeft() {
         <div className="flex items-start justify-between gap-4">
           <div>
             <div className="text-xs text-muted-foreground">Good morning</div>
-            <h1 className="text-3xl font-bold leading-tight">Welcome back, Alex.</h1>
+            <h1 className="text-2xl font-bold leading-tight">Welcome back, Alex.</h1>
           </div>
-          <div className="flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
+          <div className="flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
             <Shield className="size-3.5" />
             AI Guard Active · 0 issues
           </div>
         </div>
-        <div className="mt-4 rounded-xl bg-muted/60 p-4 text-sm text-muted-foreground">
+        <div className="mt-3 rounded-xl bg-muted/60 p-3 text-sm text-muted-foreground">
           You haven't connected any accounts yet, so there's{" "}
           <span className="text-foreground">nothing at risk.</span> Take your time to explore.
         </div>
@@ -324,15 +324,15 @@ function BeginnerLeft() {
 
       <Card>
         <Label>While you were away</Label>
-        <div className="mt-3 flex items-start gap-3">
-          <div className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary">
-            <Zap className="size-5" />
+        <div className="mt-2 flex items-start gap-3">
+          <div className="grid size-9 place-items-center rounded-xl bg-primary/10 text-primary">
+            <Zap className="size-4" />
           </div>
           <div className="flex-1">
             <div className="text-sm font-semibold">
               AI scanned 50+ market opportunities overnight
             </div>
-            <div className="mt-1 text-xs text-muted-foreground">
+            <div className="mt-0.5 text-xs text-muted-foreground">
               S&amp;P 500 <span className="font-semibold text-primary">+0.42%</span> · NASDAQ{" "}
               <span className="font-semibold text-primary">+0.71%</span>
             </div>
@@ -349,12 +349,12 @@ function BeginnerLeft() {
             <span className="size-2 rounded-full bg-primary/25" />
           </div>
         </div>
-        <h2 className="mt-3 text-2xl font-bold">Connect a bank account</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <h2 className="mt-2 text-xl font-bold">Connect a bank account</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
           One 30-second link lets AI see your cash so it can spot idle money and inflation drag.
           Read-only. Never leaves your device.
         </p>
-        <div className="mt-5 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           <PillButton icon={<Building2 className="size-4" />}>Connect a bank</PillButton>
           <PillButton variant="secondary">Not now — browse portfolios</PillButton>
         </div>
