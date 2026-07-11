@@ -511,8 +511,8 @@ function HealthRing({ score }: { score: number }) {
   const c = 2 * Math.PI * r;
   const off = c - (score / 100) * c;
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-border/70 bg-card p-3">
-      <svg width="88" height="88" viewBox="0 0 88 88">
+    <div className="flex items-center gap-2 rounded-xl border border-border/70 bg-card p-2">
+      <svg width="72" height="72" viewBox="0 0 88 88">
         <circle cx="44" cy="44" r={r} fill="none" stroke="var(--muted)" strokeWidth="8" />
         <circle
           cx="44"
