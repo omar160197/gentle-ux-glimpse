@@ -262,7 +262,7 @@ function GuestLeft() {
         ]}
       />
 
-      <div className="flex items-center justify-between rounded-2xl border border-border/70 bg-card px-5 py-4 shadow-soft">
+      <div className="flex items-center justify-between rounded-2xl border border-border/70 bg-card px-4 py-3 shadow-soft">
         <div>
           <div className="text-sm font-semibold">Wanna learn how to deal with our copilot?</div>
           <div className="text-xs text-muted-foreground">
