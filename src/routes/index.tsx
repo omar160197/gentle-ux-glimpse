@@ -66,7 +66,7 @@ function HomeDemo() {
 function TopBar({ tier, setTier }: { tier: Tier; setTier: (t: Tier) => void }) {
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 glass">
-      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 md:flex-row md:items-center md:justify-between md:px-10">
+      <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-2 md:flex-row md:items-center md:justify-between md:px-10">
         <div className="flex items-center gap-3">
           <div className="grid size-9 place-items-center rounded-xl bg-primary text-primary-foreground shadow-glow">
             <Sparkles className="size-4" />
