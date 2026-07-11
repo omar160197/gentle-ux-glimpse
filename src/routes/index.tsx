@@ -655,8 +655,8 @@ function Alert({
       ? "bg-[color:var(--danger)]/10 text-[color:var(--danger)]"
       : "bg-primary/10 text-primary";
   return (
-    <li className="flex items-start gap-3 py-3 first:pt-0 last:pb-0">
-      <div className={`grid size-8 place-items-center rounded-lg ${tintCls}`}>{icon}</div>
+    <li className="flex items-start gap-3 py-2 first:pt-0 last:pb-0">
+      <div className={`grid size-7 place-items-center rounded-lg ${tintCls}`}>{icon}</div>
       <div className="flex-1">
         <div className="text-sm font-semibold">{title}</div>
         <div className="text-xs text-muted-foreground">{meta}</div>
