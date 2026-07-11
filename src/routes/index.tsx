@@ -39,15 +39,15 @@ function HomeDemo() {
   return (
     <div className="min-h-screen bg-background">
       <TopBar tier={tier} setTier={setTier} />
-      <main className="mx-auto max-w-7xl px-4 py-6 md:px-10 md:py-8">
-        <div className="grid gap-6 lg:grid-cols-3">
-          <section className="space-y-6 lg:col-span-2">
+      <main className="mx-auto max-w-7xl px-4 py-4 md:px-10 md:py-5">
+        <div className="grid gap-4 lg:grid-cols-3">
+          <section className="space-y-3 lg:col-span-2">
             {tier === "guest" && <GuestLeft />}
             {tier === "beginner" && <BeginnerLeft />}
             {tier === "connected" && <InvestorLeft withAnalysis={false} />}
             {tier === "experienced" && <InvestorLeft withAnalysis />}
           </section>
-          <aside className="space-y-6">
+          <aside className="space-y-3">
             <TopPerformers />
             {tier === "guest" || tier === "beginner" ? (
               <SavingsGoalCard />
