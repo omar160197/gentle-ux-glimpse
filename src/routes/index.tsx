@@ -678,13 +678,13 @@ function MarketContext() {
         <Label>Market context</Label>
         <LineChart className="size-4 text-muted-foreground" />
       </div>
-      <div className="mt-3 grid grid-cols-3 gap-3">
+      <div className="mt-2 grid grid-cols-3 gap-2">
         {rows.map((r) => (
-          <div key={r.label} className="rounded-xl border border-border/70 bg-muted/30 p-3">
+          <div key={r.label} className="rounded-xl border border-border/70 bg-muted/30 p-2.5">
             <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
               {r.label}
             </div>
-            <div className="num mt-1 text-base font-semibold">{r.value}</div>
+            <div className="num mt-0.5 text-sm font-semibold">{r.value}</div>
             <div
               className={`num text-xs font-semibold ${
                 r.up ? "text-primary" : "text-[color:var(--danger)]"
