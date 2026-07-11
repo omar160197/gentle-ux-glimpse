@@ -587,14 +587,14 @@ function MostImportantThing({ withAnalysis }: { withAnalysis: boolean }) {
         </span>
         <Label>Most important thing</Label>
       </div>
-      <h3 className="mt-2 text-xl font-bold">
+      <h3 className="mt-1.5 text-lg font-bold">
         Tech is 41% of your portfolio — consider trimming.
       </h3>
       <p className="mt-1 text-sm text-muted-foreground">
         A single-sector drawdown could hit your net worth harder than your risk profile allows.
         A small rebalance restores balance without triggering large tax events.
       </p>
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-3 flex flex-wrap gap-2">
         <PillButton icon={<Target className="size-4" />}>Review rebalance</PillButton>
         <PillButton variant="secondary" icon={<Bot className="size-4" />}>
           Ask AI
