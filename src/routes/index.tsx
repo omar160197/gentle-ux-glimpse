@@ -776,18 +776,18 @@ function IdleCashCard() {
           Losing to inflation
         </span>
       </div>
-      <div className="num mt-2 text-3xl font-bold">$18,240</div>
+      <div className="num mt-1.5 text-2xl font-bold">$18,240</div>
       <p className="mt-1 text-xs text-muted-foreground">
         Sitting in checking at 0.01% APY. Inflation drag ≈{" "}
         <span className="num text-foreground">$547/yr</span>.
       </p>
-      <div className="mt-4 rounded-xl border border-primary/20 bg-primary/5 p-3">
+      <div className="mt-3 rounded-xl border border-primary/20 bg-primary/5 p-2.5">
         <div className="text-xs font-semibold text-primary">If moved to AI Portfolio</div>
-        <div className="num mt-1 text-lg font-semibold">
+        <div className="num mt-0.5 text-base font-semibold">
           +$1,824 <span className="text-xs font-medium text-muted-foreground">est. 12mo</span>
         </div>
       </div>
-      <div className="mt-4">
+      <div className="mt-3">
         <PillButton icon={<ArrowRight className="size-4" />}>Move to AI Portfolio</PillButton>
       </div>
     </Card>
