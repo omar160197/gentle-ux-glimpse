@@ -153,7 +153,7 @@ function PillButton({
       : "bg-secondary text-secondary-foreground hover:bg-muted";
   return (
     <button
-      className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition ${styles}`}
+      className={`inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-semibold transition ${styles}`}
     >
       {icon}
       {children}
