@@ -121,7 +121,7 @@ function Card({
 }) {
   return (
     <div
-      className={`rounded-2xl border border-border/70 bg-card p-5 md:p-6 ${
+      className={`rounded-2xl border border-border/70 bg-card p-4 ${
         glow ? "shadow-glow" : "shadow-soft"
       } ${className}`}
     >
