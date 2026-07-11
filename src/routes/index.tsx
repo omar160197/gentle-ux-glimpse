@@ -420,11 +420,11 @@ function MiniStat({
   up: boolean;
 }) {
   return (
-    <div className="rounded-2xl border border-border/70 bg-card p-4 shadow-soft">
+    <div className="rounded-2xl border border-border/70 bg-card p-3 shadow-soft">
       <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
         {label}
       </div>
-      <div className="num mt-1 text-lg font-semibold">{value}</div>
+      <div className="num mt-0.5 text-base font-semibold">{value}</div>
       <div
         className={`num text-xs font-semibold ${
           up ? "text-primary" : "text-[color:var(--danger)]"
