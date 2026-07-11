@@ -190,16 +190,16 @@ function AiDock({ placeholder, chips }: { placeholder: string; chips: string[] }
         </div>
         <div className="text-sm font-semibold">Ask the AI copilot</div>
       </div>
-      <div className="mt-4 flex items-center gap-2 rounded-xl border border-border bg-card p-2 shadow-soft">
+      <div className="mt-3 flex items-center gap-2 rounded-xl border border-border bg-card p-1.5 shadow-soft">
         <input
-          className="flex-1 bg-transparent px-2 py-2 text-sm outline-none placeholder:text-muted-foreground"
+          className="flex-1 bg-transparent px-2 py-1.5 text-sm outline-none placeholder:text-muted-foreground"
           placeholder={placeholder}
         />
-        <button className="grid size-9 place-items-center rounded-lg bg-primary text-primary-foreground hover:brightness-105">
+        <button className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground hover:brightness-105">
           <Send className="size-4" />
         </button>
       </div>
-      <div className="mt-3 flex flex-wrap gap-2">
+      <div className="mt-2 flex flex-wrap gap-1.5">
         {chips.map((c) => (
           <button
             key={c}
