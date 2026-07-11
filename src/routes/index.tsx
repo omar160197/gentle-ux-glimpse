@@ -548,7 +548,7 @@ function HealthRing({ score }: { score: number }) {
 
 function ReassuranceBand() {
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-primary/20 bg-primary/5 px-5 py-4">
+    <div className="flex items-center gap-3 rounded-2xl border border-primary/20 bg-primary/5 px-4 py-2.5">
       <CheckCircle2 className="size-5 shrink-0 text-primary" />
       <div className="text-sm">
         <span className="font-semibold text-foreground">You're in a strong position.</span>{" "}
