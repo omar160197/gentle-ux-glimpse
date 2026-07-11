@@ -611,7 +611,7 @@ function WhileYouWereAway({ withAnalysis }: { withAnalysis: boolean }) {
         <Label>While you were away</Label>
         <span className="text-[11px] text-muted-foreground">Last 24h</span>
       </div>
-      <ul className="mt-3 divide-y divide-border/70">
+      <ul className="mt-2 divide-y divide-border/70">
         <Alert
           icon={<Bell className="size-4" />}
           tint="info"
