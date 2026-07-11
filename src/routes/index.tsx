@@ -749,17 +749,17 @@ function SavingsGoalCard() {
         <Label>Savings goal</Label>
         <CircleDollarSign className="size-4 text-primary" />
       </div>
-      <div className="mt-2 text-sm font-semibold">House deposit</div>
-      <div className="num mt-1 text-2xl font-bold">
+      <div className="mt-1.5 text-sm font-semibold">House deposit</div>
+      <div className="num mt-0.5 text-xl font-bold">
         $24,500 <span className="text-sm font-medium text-muted-foreground">/ $50,000</span>
       </div>
-      <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-muted">
+      <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted">
         <div
           className="h-full rounded-full bg-gradient-to-r from-primary to-primary/60"
           style={{ width: `${pct}%` }}
         />
       </div>
-      <div className="mt-2 flex items-center justify-between text-xs">
+      <div className="mt-1.5 flex items-center justify-between text-xs">
         <span className="text-muted-foreground">{pct}% funded</span>
         <span className="font-semibold text-primary">On track</span>
       </div>
