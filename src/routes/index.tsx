@@ -381,27 +381,27 @@ function SamplePortfolioCard() {
       <div className="flex items-start justify-between">
         <div>
           <Label>Sample portfolio</Label>
-          <div className="mt-1 text-lg font-semibold">Balanced Growth · AI</div>
+          <div className="mt-0.5 text-base font-semibold">Balanced Growth · AI</div>
         </div>
         <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-semibold text-primary">
           Beating cash +6.2%
         </span>
       </div>
-      <div className="mt-3">
+      <div className="mt-2">
         <Sparkline up />
       </div>
-      <div className="mt-3 grid grid-cols-3 gap-3 text-xs">
+      <div className="mt-2 grid grid-cols-3 gap-3 text-xs">
         <div>
           <div className="text-muted-foreground">1Y return</div>
-          <div className="num text-base font-semibold text-primary">+14.8%</div>
+          <div className="num text-sm font-semibold text-primary">+14.8%</div>
         </div>
         <div>
           <div className="text-muted-foreground">Risk</div>
-          <div className="num text-base font-semibold">Moderate</div>
+          <div className="num text-sm font-semibold">Moderate</div>
         </div>
         <div>
           <div className="text-muted-foreground">Holdings</div>
-          <div className="num text-base font-semibold">12</div>
+          <div className="num text-sm font-semibold">12</div>
         </div>
       </div>
     </Card>
