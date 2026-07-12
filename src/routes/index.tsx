@@ -1,6 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
   Shield,
   Sparkles,
   TrendingUp,
@@ -30,6 +37,10 @@ import {
   HandCoins,
   PiggyBank,
   Home,
+  Car,
+  Plane,
+  GraduationCap,
+  Check,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -259,7 +270,10 @@ function AiMonitoringBadge({ issues = 0 }: { issues?: number }) {
 
 /* ---------- TIER 1: GUEST ---------- */
 
+type StarterKind = "loan" | "invest" | "goal";
+
 function GuestLeft() {
+  const [open, setOpen] = useState<StarterKind | null>(null);
   return (
     <>
       <Card className="gradient-mint" glow>
@@ -267,31 +281,34 @@ function GuestLeft() {
           <span className="rounded-full bg-primary/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary">
             Welcome to InvestWhat
           </span>
-          <span className="text-[11px] text-muted-foreground">let's find your path</span>
+          <span className="text-[11px] text-muted-foreground">you're in the right place</span>
         </div>
         <h1 className="mt-3 text-3xl font-bold leading-tight md:text-4xl">
-          What brings you <span className="text-primary">here today</span>?
+          Whatever you're after, <span className="text-primary">we'll take it from here</span>.
         </h1>
         <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-          Pick the one that fits you best. We'll tailor everything — portfolio, plan, and AI
-          coaching — around your real goal.
+          A loan hanging over you, money to grow, or a real-life goal — pick one and we'll show
+          you exactly how we'd handle it, with a real plan and a real portfolio.
         </p>
 
         <div className="mt-4 grid gap-2.5 sm:grid-cols-3">
           <StartTile
             title="I have a loan to handle"
-            body="Pay it down smarter — we'll balance payoff vs. investing."
+            body="See a payoff plan + portfolio that balances debt and growth."
             icon={<HandCoins className="size-4" />}
+            onClick={() => setOpen("loan")}
           />
           <StartTile
             title="I want to save & invest"
-            body="Short or long-term plan for the next 2–3 years."
+            body="Watch $300/mo turn into a 3-year plan with real portfolios."
             icon={<PiggyBank className="size-4" />}
+            onClick={() => setOpen("invest")}
           />
           <StartTile
             title="I have a goal in mind"
-            body="Buying a house, a car, or something big — plan it."
+            body="Car, house, trip — see exactly how we'd get you there."
             icon={<Home className="size-4" />}
+            onClick={() => setOpen("goal")}
           />
         </div>
       </Card>
@@ -319,6 +336,8 @@ function GuestLeft() {
           Explore <ArrowRight className="size-4" />
         </button>
       </div>
+
+      <StarterSimulator kind={open} onClose={() => setOpen(null)} />
     </>
   );
 }
@@ -338,22 +357,333 @@ function StartTile({
   title,
   body,
   icon,
+  onClick,
 }: {
   title: string;
   body: string;
   icon: ReactNode;
+  onClick?: () => void;
 }) {
   return (
-    <button className="group flex h-full flex-col items-start gap-1.5 rounded-xl border border-border bg-card p-3 text-left transition hover:border-primary/40 hover:shadow-soft">
+    <button
+      onClick={onClick}
+      className="group flex h-full flex-col items-start gap-1.5 rounded-xl border border-border bg-card p-3 text-left transition hover:border-primary/40 hover:shadow-soft"
+    >
       <div className="grid size-8 place-items-center rounded-lg bg-primary/10 text-primary">
         {icon}
       </div>
       <div className="text-sm font-semibold">{title}</div>
       <div className="text-xs text-muted-foreground">{body}</div>
-      <div className="mt-auto inline-flex items-center gap-1 text-xs font-semibold text-primary opacity-0 transition group-hover:opacity-100">
-        Start <ArrowRight className="size-3" />
+      <div className="mt-auto inline-flex items-center gap-1 text-xs font-semibold text-primary opacity-70 transition group-hover:opacity-100">
+        See how <ArrowRight className="size-3" />
       </div>
     </button>
+  );
+}
+
+/* ---------- Starter simulator (Guest / first-time login) ---------- */
+
+const STARTER_META: Record<
+  StarterKind,
+  { title: string; sub: string; icon: ReactNode }
+> = {
+  loan: {
+    title: "Loan handling plan",
+    sub: "See what pay-down + smart investing looks like side by side",
+    icon: <HandCoins className="size-4" />,
+  },
+  invest: {
+    title: "Save & invest plan",
+    sub: "$300/mo · 3 years · what you'd actually end up with",
+    icon: <PiggyBank className="size-4" />,
+  },
+  goal: {
+    title: "Goal-based plan",
+    sub: "Pick what you want — we'll show the shortest path to it",
+    icon: <Target className="size-4" />,
+  },
+};
+
+function StarterSimulator({
+  kind,
+  onClose,
+}: {
+  kind: StarterKind | null;
+  onClose: () => void;
+}) {
+  const meta = kind ? STARTER_META[kind] : null;
+  return (
+    <Dialog open={!!kind} onOpenChange={(o) => !o && onClose()}>
+      <DialogContent className="max-w-2xl overflow-hidden p-0">
+        {meta && (
+          <>
+            <DialogHeader className="border-b border-border/70 bg-secondary/40 px-5 py-3">
+              <div className="flex items-center gap-2">
+                <div className="grid size-8 place-items-center rounded-lg bg-primary/10 text-primary">
+                  {meta.icon}
+                </div>
+                <div>
+                  <DialogTitle className="text-base">{meta.title}</DialogTitle>
+                  <DialogDescription className="text-xs">{meta.sub}</DialogDescription>
+                </div>
+              </div>
+            </DialogHeader>
+            <div className="max-h-[70vh] overflow-y-auto p-5">
+              {kind === "loan" && <LoanSimulator />}
+              {kind === "invest" && <InvestSimulator />}
+              {kind === "goal" && <GoalSimulator />}
+              <div className="mt-4 flex items-center justify-between rounded-xl border border-border/70 bg-secondary/40 p-3">
+                <div className="text-xs text-muted-foreground">
+                  Numbers are illustrative. Sign up to run this with your real balances.
+                </div>
+                <PillButton size="sm" icon={<ArrowRight className="size-3.5" />}>
+                  Start this plan
+                </PillButton>
+              </div>
+            </div>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function StatBlock({
+  label,
+  value,
+  sub,
+  tone = "default",
+}: {
+  label: string;
+  value: string;
+  sub?: string;
+  tone?: "default" | "primary" | "danger";
+}) {
+  const toneCls =
+    tone === "primary"
+      ? "text-primary"
+      : tone === "danger"
+        ? "text-[color:var(--danger)]"
+        : "text-foreground";
+  return (
+    <div className="rounded-xl border border-border bg-card p-3">
+      <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+        {label}
+      </div>
+      <div className={`mt-1 text-lg font-bold ${toneCls}`}>{value}</div>
+      {sub && <div className="text-[11px] text-muted-foreground">{sub}</div>}
+    </div>
+  );
+}
+
+function AllocBar({ parts }: { parts: { label: string; pct: number; color: string }[] }) {
+  return (
+    <div className="space-y-1.5">
+      <div className="flex h-2 w-full overflow-hidden rounded-full bg-secondary">
+        {parts.map((p) => (
+          <div key={p.label} style={{ width: `${p.pct}%`, background: p.color }} />
+        ))}
+      </div>
+      <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
+        {parts.map((p) => (
+          <span key={p.label} className="inline-flex items-center gap-1">
+            <span className="size-1.5 rounded-full" style={{ background: p.color }} />
+            {p.label} {p.pct}%
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function LoanSimulator() {
+  return (
+    <div className="space-y-4">
+      <div className="grid gap-2 sm:grid-cols-3">
+        <StatBlock label="Loan balance" value="$18,500" sub="6.9% APR · 60 mo left" />
+        <StatBlock label="Monthly you can spare" value="$620" sub="after essentials" />
+        <StatBlock label="Interest you'd save" value="$2,140" tone="primary" sub="vs. minimums" />
+      </div>
+
+      <div className="grid gap-2 md:grid-cols-2">
+        <div className="rounded-xl border border-border bg-card p-3">
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-semibold">Plan A · Aggressive payoff</div>
+            <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-semibold">
+              Debt-free faster
+            </span>
+          </div>
+          <div className="mt-2 space-y-1 text-xs text-muted-foreground">
+            <div className="flex justify-between"><span>Loan gone in</span><span className="font-semibold text-foreground">42 months</span></div>
+            <div className="flex justify-between"><span>Invested on the side</span><span className="font-semibold text-foreground">$0</span></div>
+            <div className="flex justify-between"><span>Net worth in 5 yrs</span><span className="font-semibold text-foreground">+$4,900</span></div>
+          </div>
+        </div>
+        <div className="rounded-xl border border-primary/40 bg-primary/5 p-3">
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-semibold">Plan B · Pay + invest</div>
+            <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-semibold text-primary">
+              We recommend
+            </span>
+          </div>
+          <div className="mt-2 space-y-1 text-xs text-muted-foreground">
+            <div className="flex justify-between"><span>Loan gone in</span><span className="font-semibold text-foreground">54 months</span></div>
+            <div className="flex justify-between"><span>Invested on the side</span><span className="font-semibold text-foreground">$220/mo</span></div>
+            <div className="flex justify-between"><span>Net worth in 5 yrs</span><span className="font-semibold text-primary">+$11,300</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-border bg-card p-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <Label>Recommended portfolio</Label>
+            <div className="mt-0.5 text-sm font-semibold">Debt-Smart Balanced · 5.8% avg</div>
+          </div>
+          <div className="text-right text-[11px] text-muted-foreground">Low volatility · liquid</div>
+        </div>
+        <div className="mt-2">
+          <AllocBar
+            parts={[
+              { label: "Bond ETF (BND)", pct: 45, color: "var(--primary)" },
+              { label: "US Stocks (VTI)", pct: 30, color: "#0ea5e9" },
+              { label: "Intl (VXUS)", pct: 15, color: "#8b5cf6" },
+              { label: "Cash", pct: 10, color: "#64748b" },
+            ]}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InvestSimulator() {
+  const options = [
+    { name: "Conservative", ret: "4.2%", end: "$11,540", note: "capital protection" },
+    { name: "Balanced", ret: "6.8%", end: "$12,850", note: "we recommend", recommended: true },
+    { name: "Growth", ret: "9.4%", end: "$14,120", note: "higher swings" },
+  ];
+  return (
+    <div className="space-y-4">
+      <div className="grid gap-2 sm:grid-cols-3">
+        <StatBlock label="You put in" value="$300/mo" sub="$10,800 over 3 yrs" />
+        <StatBlock label="Projected value" value="$12,850" tone="primary" sub="Balanced · 6.8% avg" />
+        <StatBlock label="Vs plain savings" value="+$2,050" sub="1.5% APY comparison" />
+      </div>
+
+      <div className="rounded-xl border border-border bg-card p-3">
+        <div className="flex items-center justify-between">
+          <Label>3-year projection</Label>
+          <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+            <span className="inline-flex items-center gap-1"><span className="size-2 rounded-full bg-primary" /> Invested</span>
+            <span className="inline-flex items-center gap-1"><span className="size-2 rounded-full bg-muted-foreground/60" /> Savings</span>
+          </div>
+        </div>
+        <div className="mt-1"><DualSparkline /></div>
+      </div>
+
+      <div>
+        <Label>Pick a starting portfolio</Label>
+        <div className="mt-2 grid gap-2 sm:grid-cols-3">
+          {options.map((o) => (
+            <div
+              key={o.name}
+              className={`rounded-xl border p-3 ${
+                o.recommended ? "border-primary/40 bg-primary/5" : "border-border bg-card"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-semibold">{o.name}</div>
+                {o.recommended && (
+                  <span className="rounded-full bg-primary/15 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
+                    Pick
+                  </span>
+                )}
+              </div>
+              <div className="mt-1 text-lg font-bold text-primary">{o.ret}</div>
+              <div className="text-[11px] text-muted-foreground">→ {o.end} in 3y</div>
+              <div className="mt-1 text-[10px] text-muted-foreground">{o.note}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function GoalSimulator() {
+  const goals = [
+    { id: "car", label: "New car", icon: <Car className="size-3.5" />, target: 28000, months: 24 },
+    { id: "house", label: "House down-pmt", icon: <Home className="size-3.5" />, target: 45000, months: 48 },
+    { id: "trip", label: "Big trip", icon: <Plane className="size-3.5" />, target: 6500, months: 12 },
+    { id: "school", label: "School", icon: <GraduationCap className="size-3.5" />, target: 18000, months: 36 },
+  ];
+  const [pick, setPick] = useState(goals[0]);
+  const monthlySave = Math.round(pick.target / pick.months);
+  const monthlyInvest = Math.round(pick.target / (pick.months * 1.14));
+  return (
+    <div className="space-y-4">
+      <div>
+        <Label>What are you saving for?</Label>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {goals.map((g) => {
+            const active = g.id === pick.id;
+            return (
+              <button
+                key={g.id}
+                onClick={() => setPick(g)}
+                className={`inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-semibold transition ${
+                  active
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border bg-card hover:border-primary/40"
+                }`}
+              >
+                {g.icon}
+                {g.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="grid gap-2 sm:grid-cols-3">
+        <StatBlock label="Target" value={`$${pick.target.toLocaleString()}`} sub={`in ${pick.months} months`} />
+        <StatBlock label="Just saving" value={`$${monthlySave}/mo`} sub="0% return" />
+        <StatBlock label="Investing" value={`$${monthlyInvest}/mo`} tone="primary" sub="Goal-Track Balanced" />
+      </div>
+
+      <div className="rounded-xl border border-border bg-card p-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <Label>Sample portfolio for this goal</Label>
+            <div className="mt-0.5 text-sm font-semibold">Goal-Track Balanced · 6.4% avg</div>
+          </div>
+          <span className="rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-semibold text-primary">
+            Auto-rebalanced
+          </span>
+        </div>
+        <div className="mt-2">
+          <AllocBar
+            parts={[
+              { label: "VTI", pct: 40, color: "var(--primary)" },
+              { label: "BND", pct: 35, color: "#0ea5e9" },
+              { label: "VXUS", pct: 15, color: "#8b5cf6" },
+              { label: "Cash", pct: 10, color: "#64748b" },
+            ]}
+          />
+        </div>
+        <ul className="mt-3 space-y-1 text-xs text-muted-foreground">
+          <li className="flex items-start gap-1.5">
+            <Check className="mt-0.5 size-3.5 text-primary" />
+            AI shifts to safer assets as you get within 6 months of your goal.
+          </li>
+          <li className="flex items-start gap-1.5">
+            <Check className="mt-0.5 size-3.5 text-primary" />
+            Weekly nudges if you fall behind — we tell you exactly what to top up.
+          </li>
+        </ul>
+      </div>
+    </div>
   );
 }
 
