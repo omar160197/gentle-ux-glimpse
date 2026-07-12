@@ -1,6 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
   Shield,
   Sparkles,
   TrendingUp,
@@ -30,6 +37,10 @@ import {
   HandCoins,
   PiggyBank,
   Home,
+  Car,
+  Plane,
+  GraduationCap,
+  Check,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
