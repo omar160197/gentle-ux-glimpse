@@ -394,7 +394,7 @@ function GuestUsageMeter() {
     <Card>
       <div className="flex items-center justify-between">
         <Label>Free AI today</Label>
-        <span className="text-[11px] font-semibold text-primary">Guest</span>
+        <span className="text-[11px] font-semibold text-primary">New here</span>
       </div>
       <div className="mt-1.5 flex items-baseline gap-1">
         <span className="num text-xl font-bold">{total - used}</span>
