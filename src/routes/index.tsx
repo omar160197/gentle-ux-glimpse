@@ -27,6 +27,9 @@ import {
   Vote,
   Crown,
   BellRing,
+  HandCoins,
+  PiggyBank,
+  Home,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -36,7 +39,7 @@ export const Route = createFileRoute("/")({
 type Tier = "guest" | "beginner" | "connected" | "experienced";
 
 const TIERS: { id: Tier; label: string; sub: string }[] = [
-  { id: "guest", label: "Guest", sub: "not signed in" },
+  { id: "guest", label: "First-time login", sub: "signed in, no history" },
   { id: "beginner", label: "Beginner", sub: "auth, no data" },
   { id: "connected", label: "Connected", sub: "portfolios + bank" },
   { id: "experienced", label: "Experienced", sub: "+ AI analysis" },
@@ -262,33 +265,33 @@ function GuestLeft() {
       <Card className="gradient-mint" glow>
         <div className="flex items-center gap-2">
           <span className="rounded-full bg-primary/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-primary">
-            AI copilot
+            Welcome to InvestWhat
           </span>
-          <span className="text-[11px] text-muted-foreground">no signup required</span>
+          <span className="text-[11px] text-muted-foreground">let's find your path</span>
         </div>
         <h1 className="mt-3 text-3xl font-bold leading-tight md:text-4xl">
-          Investing, <span className="text-primary">explained by AI</span>.
+          What brings you <span className="text-primary">here today</span>?
         </h1>
         <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-          Pick a starting point. We'll build a portfolio, analyze what you already own, or help
-          you plan a goal — plain-English, no jargon.
+          Pick the one that fits you best. We'll tailor everything — portfolio, plan, and AI
+          coaching — around your real goal.
         </p>
 
         <div className="mt-4 grid gap-2.5 sm:grid-cols-3">
           <StartTile
-            title="I'm new to investing"
-            body="Start with a guided path — risk, timeline, portfolio."
-            icon={<Sparkles className="size-4" />}
+            title="I have a loan to handle"
+            body="Pay it down smarter — we'll balance payoff vs. investing."
+            icon={<HandCoins className="size-4" />}
           />
           <StartTile
-            title="I already invest"
-            body="Connect your brokerage for AI analysis."
-            icon={<Wallet className="size-4" />}
+            title="I want to save & invest"
+            body="Short or long-term plan for the next 2–3 years."
+            icon={<PiggyBank className="size-4" />}
           />
           <StartTile
-            title="Build with AI"
-            body="Type a goal, get a portfolio in seconds."
-            icon={<Bot className="size-4" />}
+            title="I have a goal in mind"
+            body="Buying a house, a car, or something big — plan it."
+            icon={<Home className="size-4" />}
           />
         </div>
       </Card>
@@ -391,7 +394,7 @@ function GuestUsageMeter() {
     <Card>
       <div className="flex items-center justify-between">
         <Label>Free AI today</Label>
-        <span className="text-[11px] font-semibold text-primary">Guest</span>
+        <span className="text-[11px] font-semibold text-primary">New here</span>
       </div>
       <div className="mt-1.5 flex items-baseline gap-1">
         <span className="num text-xl font-bold">{total - used}</span>
