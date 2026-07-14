@@ -167,7 +167,7 @@ function sparklinePath(vals: number[], w: number, h: number, pad = 6) {
 
 function FantasyDetailPage() {
   const p = Route.useLoaderData();
-  const [weights, setWeights] = useState<number[]>(p.holdings.map((h) => h.weight));
+  const [weights, setWeights] = useState<number[]>(p.holdings.map((h: Holding) => h.weight));
 
   const total = weights.reduce((a, b) => a + b, 0);
   const series = useMemo(() => generateSeries(p.cost, p.value), [p]);
@@ -267,7 +267,7 @@ function FantasyDetailPage() {
                 </span>
               </div>
               <div className="space-y-2">
-                {p.holdings.map((h, i) => (
+                {p.holdings.map((h: Holding, i: number) => (
                   <div
                     key={h.ticker}
                     className="flex items-center gap-3 rounded-xl border border-border/60 bg-background/50 p-3"
