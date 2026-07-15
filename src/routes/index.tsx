@@ -8,6 +8,12 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+import {
   Shield,
   Sparkles,
   TrendingUp,
@@ -58,14 +64,15 @@ const TIERS: { id: Tier; label: string; sub: string }[] = [
 
 function HomeDemo() {
   const [tier, setTier] = useState<Tier>("guest");
+  const [starter, setStarter] = useState<StarterKind | null>(null);
 
   return (
     <div className="min-h-screen bg-background">
-      <TopBar tier={tier} setTier={setTier} />
+      <TopBar tier={tier} setTier={setTier} onOpenStarter={setStarter} />
       <main className="mx-auto max-w-7xl px-4 py-4 md:px-10 md:py-5">
         <div className="grid gap-4 lg:grid-cols-3">
           <section className="space-y-3 lg:col-span-2">
-            {tier === "guest" && <GuestLeft />}
+            {tier === "guest" && <GuestLeft onOpenStarter={setStarter} />}
             {tier === "beginner" && <BeginnerLeft />}
             {tier === "connected" && <InvestorLeft withAnalysis={false} />}
             {tier === "experienced" && <InvestorLeft withAnalysis />}
@@ -78,13 +85,23 @@ function HomeDemo() {
           </aside>
         </div>
       </main>
+      <StarterSimulator kind={starter} onClose={() => setStarter(null)} />
     </div>
   );
 }
 
+
 /* ---------- Top bar with tier switcher ---------- */
 
-function TopBar({ tier, setTier }: { tier: Tier; setTier: (t: Tier) => void }) {
+function TopBar({
+  tier,
+  setTier,
+  onOpenStarter,
+}: {
+  tier: Tier;
+  setTier: (t: Tier) => void;
+  onOpenStarter: (k: StarterKind) => void;
+}) {
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 glass">
       <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-2 md:flex-row md:items-center md:justify-between md:px-10">
@@ -107,7 +124,9 @@ function TopBar({ tier, setTier }: { tier: Tier; setTier: (t: Tier) => void }) {
           >
             Fantasy
           </Link>
+          {tier !== "guest" && <NewPlanNavButton onOpenStarter={onOpenStarter} />}
         </nav>
+
         <div className="flex flex-wrap items-center gap-1 rounded-2xl border border-border/70 bg-card p-1 shadow-soft">
           {TIERS.map((t) => {
             const active = tier === t.id;
@@ -137,6 +156,74 @@ function TopBar({ tier, setTier }: { tier: Tier; setTier: (t: Tier) => void }) {
     </header>
   );
 }
+
+function NewPlanNavButton({ onOpenStarter }: { onOpenStarter: (k: StarterKind) => void }) {
+  const [open, setOpen] = useState(false);
+  const items: { kind: StarterKind; title: string; sub: string; icon: ReactNode }[] = [
+    {
+      kind: "loan",
+      title: "Handle a loan",
+      sub: "Payoff plan + smart investing",
+      icon: <HandCoins className="size-4" />,
+    },
+    {
+      kind: "invest",
+      title: "Save & invest",
+      sub: "Grow spare cash on a horizon",
+      icon: <PiggyBank className="size-4" />,
+    },
+    {
+      kind: "goal",
+      title: "Plan a goal",
+      sub: "House, car, trip, school…",
+      icon: <Target className="size-4" />,
+    },
+  ];
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          className="ml-1 inline-flex items-center gap-1.5 rounded-xl bg-primary/10 px-3 py-1.5 text-[13px] font-semibold text-primary transition hover:bg-primary/15"
+          aria-label="Start a new plan"
+        >
+          <Sparkles className="size-3.5" />
+          New plan
+        </button>
+      </PopoverTrigger>
+      <PopoverContent align="end" sideOffset={10} className="w-72 p-2">
+        <div className="px-2 pb-1.5 pt-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+          Start a new plan
+        </div>
+        <div className="flex flex-col gap-1">
+          {items.map((it) => (
+            <button
+              key={it.kind}
+              onClick={() => {
+                setOpen(false);
+                onOpenStarter(it.kind);
+              }}
+              className="flex items-center gap-2.5 rounded-lg px-2 py-2 text-left transition hover:bg-muted"
+            >
+              <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
+                {it.icon}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-semibold leading-tight">{it.title}</span>
+                <span className="block truncate text-[11px] text-muted-foreground">{it.sub}</span>
+              </span>
+              <ArrowRight className="size-3.5 text-muted-foreground" />
+            </button>
+          ))}
+        </div>
+        <div className="mt-1 border-t border-border/60 px-2 py-1.5 text-[10px] text-muted-foreground">
+          Same simulator you saw when you first joined.
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+
 
 /* ---------- Shared building blocks ---------- */
 
@@ -281,8 +368,9 @@ function AiMonitoringBadge({ issues = 0 }: { issues?: number }) {
 
 type StarterKind = "loan" | "invest" | "goal";
 
-function GuestLeft() {
-  const [open, setOpen] = useState<StarterKind | null>(null);
+function GuestLeft({ onOpenStarter }: { onOpenStarter: (k: StarterKind) => void }) {
+  const setOpen = onOpenStarter;
+
   return (
     <>
       <Card className="gradient-mint" glow>
@@ -346,7 +434,7 @@ function GuestLeft() {
         </button>
       </div>
 
-      <StarterSimulator kind={open} onClose={() => setOpen(null)} />
+      
     </>
   );
 }
