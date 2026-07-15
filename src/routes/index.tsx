@@ -300,8 +300,9 @@ function AiMonitoringBadge({ issues = 0 }: { issues?: number }) {
 
 type StarterKind = "loan" | "invest" | "goal";
 
-function GuestLeft() {
-  const [open, setOpen] = useState<StarterKind | null>(null);
+function GuestLeft({ onOpenStarter }: { onOpenStarter: (k: StarterKind) => void }) {
+  const setOpen = onOpenStarter;
+
   return (
     <>
       <Card className="gradient-mint" glow>
