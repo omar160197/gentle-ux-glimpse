@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as HeatmapRouteImport } from './routes/heatmap'
 import { Route as FantasyRouteImport } from './routes/fantasy'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FantasyIdRouteImport } from './routes/fantasy.$id'
 
+const HeatmapRoute = HeatmapRouteImport.update({
+  id: '/heatmap',
+  path: '/heatmap',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FantasyRoute = FantasyRouteImport.update({
   id: '/fantasy',
   path: '/fantasy',
@@ -32,34 +38,45 @@ const FantasyIdRoute = FantasyIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/fantasy': typeof FantasyRouteWithChildren
+  '/heatmap': typeof HeatmapRoute
   '/fantasy/$id': typeof FantasyIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/fantasy': typeof FantasyRouteWithChildren
+  '/heatmap': typeof HeatmapRoute
   '/fantasy/$id': typeof FantasyIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/fantasy': typeof FantasyRouteWithChildren
+  '/heatmap': typeof HeatmapRoute
   '/fantasy/$id': typeof FantasyIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/fantasy' | '/fantasy/$id'
+  fullPaths: '/' | '/fantasy' | '/heatmap' | '/fantasy/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/fantasy' | '/fantasy/$id'
-  id: '__root__' | '/' | '/fantasy' | '/fantasy/$id'
+  to: '/' | '/fantasy' | '/heatmap' | '/fantasy/$id'
+  id: '__root__' | '/' | '/fantasy' | '/heatmap' | '/fantasy/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FantasyRoute: typeof FantasyRouteWithChildren
+  HeatmapRoute: typeof HeatmapRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/heatmap': {
+      id: '/heatmap'
+      path: '/heatmap'
+      fullPath: '/heatmap'
+      preLoaderRoute: typeof HeatmapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/fantasy': {
       id: '/fantasy'
       path: '/fantasy'
@@ -98,17 +115,8 @@ const FantasyRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FantasyRoute: FantasyRouteWithChildren,
+  HeatmapRoute: HeatmapRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
