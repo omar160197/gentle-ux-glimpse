@@ -119,6 +119,12 @@ function TopBar({
         <nav className="flex items-center gap-1 rounded-2xl border border-border/70 bg-card p-1 shadow-soft">
           <span className="rounded-xl bg-primary/10 px-3 py-1.5 text-[13px] font-semibold text-primary">Home</span>
           <Link
+            to="/heatmap"
+            className="rounded-xl px-3 py-1.5 text-[13px] font-semibold text-foreground transition hover:bg-muted"
+          >
+            Heatmap
+          </Link>
+          <Link
             to="/fantasy"
             className="rounded-xl px-3 py-1.5 text-[13px] font-semibold text-foreground transition hover:bg-muted"
           >
