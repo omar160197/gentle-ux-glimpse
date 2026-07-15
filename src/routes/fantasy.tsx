@@ -611,10 +611,25 @@ export function FantasyTopBar() {
           <Link
             to="/"
             className="rounded-xl px-3 py-1.5 text-[13px] font-semibold text-foreground transition hover:bg-muted"
+            activeOptions={{ exact: true }}
+            activeProps={{ className: "rounded-xl bg-primary/10 px-3 py-1.5 text-[13px] font-semibold text-primary" }}
           >
             Home
           </Link>
-          <span className="rounded-xl bg-primary/10 px-3 py-1.5 text-[13px] font-semibold text-primary">Fantasy</span>
+          <Link
+            to="/heatmap"
+            className="rounded-xl px-3 py-1.5 text-[13px] font-semibold text-foreground transition hover:bg-muted"
+            activeProps={{ className: "rounded-xl bg-primary/10 px-3 py-1.5 text-[13px] font-semibold text-primary" }}
+          >
+            Heatmap
+          </Link>
+          <Link
+            to="/fantasy"
+            className="rounded-xl px-3 py-1.5 text-[13px] font-semibold text-foreground transition hover:bg-muted"
+            activeProps={{ className: "rounded-xl bg-primary/10 px-3 py-1.5 text-[13px] font-semibold text-primary" }}
+          >
+            Fantasy
+          </Link>
         </nav>
       </div>
     </header>
