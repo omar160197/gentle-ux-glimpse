@@ -366,7 +366,7 @@ function GuestLeft({ onOpenStarter }: { onOpenStarter: (k: StarterKind) => void 
         </button>
       </div>
 
-      <StarterSimulator kind={open} onClose={() => setOpen(null)} />
+      
     </>
   );
 }
