@@ -93,7 +93,15 @@ function HomeDemo() {
 
 /* ---------- Top bar with tier switcher ---------- */
 
-function TopBar({ tier, setTier }: { tier: Tier; setTier: (t: Tier) => void }) {
+function TopBar({
+  tier,
+  setTier,
+  onOpenStarter,
+}: {
+  tier: Tier;
+  setTier: (t: Tier) => void;
+  onOpenStarter: (k: StarterKind) => void;
+}) {
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 glass">
       <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-2 md:flex-row md:items-center md:justify-between md:px-10">
@@ -116,7 +124,9 @@ function TopBar({ tier, setTier }: { tier: Tier; setTier: (t: Tier) => void }) {
           >
             Fantasy
           </Link>
+          {tier !== "guest" && <NewPlanNavButton onOpenStarter={onOpenStarter} />}
         </nav>
+
         <div className="flex flex-wrap items-center gap-1 rounded-2xl border border-border/70 bg-card p-1 shadow-soft">
           {TIERS.map((t) => {
             const active = tier === t.id;
