@@ -157,6 +157,74 @@ function TopBar({
   );
 }
 
+function NewPlanNavButton({ onOpenStarter }: { onOpenStarter: (k: StarterKind) => void }) {
+  const [open, setOpen] = useState(false);
+  const items: { kind: StarterKind; title: string; sub: string; icon: ReactNode }[] = [
+    {
+      kind: "loan",
+      title: "Handle a loan",
+      sub: "Payoff plan + smart investing",
+      icon: <HandCoins className="size-4" />,
+    },
+    {
+      kind: "invest",
+      title: "Save & invest",
+      sub: "Grow spare cash on a horizon",
+      icon: <PiggyBank className="size-4" />,
+    },
+    {
+      kind: "goal",
+      title: "Plan a goal",
+      sub: "House, car, trip, school…",
+      icon: <Target className="size-4" />,
+    },
+  ];
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          className="ml-1 inline-flex items-center gap-1.5 rounded-xl bg-primary/10 px-3 py-1.5 text-[13px] font-semibold text-primary transition hover:bg-primary/15"
+          aria-label="Start a new plan"
+        >
+          <Sparkles className="size-3.5" />
+          New plan
+        </button>
+      </PopoverTrigger>
+      <PopoverContent align="end" sideOffset={10} className="w-72 p-2">
+        <div className="px-2 pb-1.5 pt-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+          Start a new plan
+        </div>
+        <div className="flex flex-col gap-1">
+          {items.map((it) => (
+            <button
+              key={it.kind}
+              onClick={() => {
+                setOpen(false);
+                onOpenStarter(it.kind);
+              }}
+              className="flex items-center gap-2.5 rounded-lg px-2 py-2 text-left transition hover:bg-muted"
+            >
+              <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
+                {it.icon}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-semibold leading-tight">{it.title}</span>
+                <span className="block truncate text-[11px] text-muted-foreground">{it.sub}</span>
+              </span>
+              <ArrowRight className="size-3.5 text-muted-foreground" />
+            </button>
+          ))}
+        </div>
+        <div className="mt-1 border-t border-border/60 px-2 py-1.5 text-[10px] text-muted-foreground">
+          Same simulator you saw when you first joined.
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+
+
 /* ---------- Shared building blocks ---------- */
 
 function Card({
