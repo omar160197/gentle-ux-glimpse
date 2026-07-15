@@ -64,14 +64,15 @@ const TIERS: { id: Tier; label: string; sub: string }[] = [
 
 function HomeDemo() {
   const [tier, setTier] = useState<Tier>("guest");
+  const [starter, setStarter] = useState<StarterKind | null>(null);
 
   return (
     <div className="min-h-screen bg-background">
-      <TopBar tier={tier} setTier={setTier} />
+      <TopBar tier={tier} setTier={setTier} onOpenStarter={setStarter} />
       <main className="mx-auto max-w-7xl px-4 py-4 md:px-10 md:py-5">
         <div className="grid gap-4 lg:grid-cols-3">
           <section className="space-y-3 lg:col-span-2">
-            {tier === "guest" && <GuestLeft />}
+            {tier === "guest" && <GuestLeft onOpenStarter={setStarter} />}
             {tier === "beginner" && <BeginnerLeft />}
             {tier === "connected" && <InvestorLeft withAnalysis={false} />}
             {tier === "experienced" && <InvestorLeft withAnalysis />}
@@ -84,9 +85,11 @@ function HomeDemo() {
           </aside>
         </div>
       </main>
+      <StarterSimulator kind={starter} onClose={() => setStarter(null)} />
     </div>
   );
 }
+
 
 /* ---------- Top bar with tier switcher ---------- */
 
