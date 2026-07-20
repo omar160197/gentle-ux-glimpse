@@ -530,94 +530,153 @@ function LogoDot({ n, s, c, size = 22 }: LogoChip & { size?: number }) {
   );
 }
 
+function useHoverExpand() {
+  const [open, setOpen] = useState(false);
+  return {
+    open,
+    setOpen,
+    bind: {
+      onMouseEnter: () => setOpen(true),
+      onMouseLeave: () => setOpen(false),
+      onFocus: () => setOpen(true),
+      onBlur: (e: React.FocusEvent) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) setOpen(false);
+      },
+    },
+  };
+}
+
+function startConnect(kind: "bank" | "brokerage", name: string) {
+  // Demo: simulate direct connection kickoff (no SnapTrade redirect)
+  alert(`Starting secure connection to ${name}…\n(${kind === "bank" ? "Open Banking" : "SnapTrade OAuth"} handshake begins in-app)`);
+}
+
 function ConnectBankCard() {
   const [country, setCountry] = useState<"SG" | "AE" | "SA">("SG");
+  const { open, bind } = useHoverExpand();
   const data = BANKS_BY_COUNTRY[country];
   const shown = data.items.slice(0, 5);
-  const more = data.total - shown.length;
+  const totalAll = BANKS_BY_COUNTRY.SG.total + BANKS_BY_COUNTRY.AE.total + BANKS_BY_COUNTRY.SA.total;
   return (
     <Card>
-      <div className="flex items-center justify-between">
-        <Label>
-          <span className="inline-flex items-center gap-1.5">
-            <Landmark className="size-3.5" /> Connect a bank
-          </span>
-        </Label>
-        <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
-          {BANKS_BY_COUNTRY.SG.total + BANKS_BY_COUNTRY.AE.total + BANKS_BY_COUNTRY.SA.total}+ banks
-        </span>
-      </div>
-      <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
-        See balances, cash flow, and net worth in one place.
-      </p>
-      <div className="mt-2 flex gap-1">
-        {(Object.keys(BANKS_BY_COUNTRY) as Array<"SG" | "AE" | "SA">).map((c) => (
+      <div {...bind} tabIndex={0} className="outline-none">
+        <div className="flex items-center justify-between gap-2">
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 text-[12px] font-semibold">
+              <Landmark className="size-3.5 text-primary" /> Connect a bank
+            </div>
+            <p className="mt-0.5 truncate text-[10.5px] text-muted-foreground">
+              Balances & net worth · {totalAll}+ banks
+            </p>
+          </div>
           <button
-            key={c}
-            onClick={() => setCountry(c)}
-            className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold transition ${
-              country === c
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground hover:bg-muted/70"
-            }`}
+            onClick={() => startConnect("bank", "your bank")}
+            className="inline-flex items-center gap-1 rounded-lg bg-primary px-2.5 py-1.5 text-[11px] font-semibold text-primary-foreground shadow-soft hover:bg-primary/90"
           >
-            {BANKS_BY_COUNTRY[c].flag} {c === "AE" ? "UAE" : c === "SA" ? "KSA" : "SG"}
+            Connect <ChevronDown className={`size-3 transition-transform ${open ? "rotate-180" : ""}`} />
           </button>
-        ))}
+        </div>
+
+        <div
+          className={`grid transition-all duration-200 ease-out ${
+            open ? "mt-2 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+          }`}
+        >
+          <div className="overflow-hidden">
+            <div className="flex gap-1">
+              {(Object.keys(BANKS_BY_COUNTRY) as Array<"SG" | "AE" | "SA">).map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setCountry(c)}
+                  className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold transition ${
+                    country === c
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground hover:bg-muted/70"
+                  }`}
+                >
+                  {BANKS_BY_COUNTRY[c].flag} {c === "AE" ? "UAE" : c === "SA" ? "KSA" : "SG"}
+                </button>
+              ))}
+            </div>
+            <ul className="mt-1.5 divide-y divide-border/60 rounded-lg border border-border/60 bg-surface-container-low/60">
+              {shown.map((b) => (
+                <li key={b.n}>
+                  <button
+                    onClick={() => startConnect("bank", b.n)}
+                    className="flex w-full items-center gap-2 px-2 py-1.5 text-left text-[11px] font-medium hover:bg-primary/5"
+                  >
+                    <LogoDot {...b} size={18} />
+                    <span className="flex-1 truncate">{b.n}</span>
+                    <ArrowRight className="size-3 text-muted-foreground" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => alert(`Opening full list of ${data.total} ${data.label} banks…`)}
+              className="mt-1 flex w-full items-center justify-center gap-1 rounded-md py-1 text-[10px] font-medium text-primary hover:bg-primary/5"
+            >
+              <Search className="size-3" /> Search all {data.total} {data.label} banks
+            </button>
+          </div>
+        </div>
       </div>
-      <div className="mt-2 flex items-center gap-1">
-        {shown.map((b) => (
-          <LogoDot key={b.n} {...b} />
-        ))}
-        <span className="grid h-[22px] shrink-0 place-items-center rounded-full border border-dashed border-border px-1.5 text-[10px] font-semibold text-muted-foreground">
-          +{more}
-        </span>
-      </div>
-      <button className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg bg-primary py-1.5 text-xs font-semibold text-primary-foreground shadow-soft hover:bg-primary/90">
-        Connect via SnapTrade <ArrowRight className="size-3" />
-      </button>
-      <button className="mt-1 flex w-full items-center justify-center gap-1 text-[10px] font-medium text-muted-foreground hover:text-primary">
-        <Search className="size-3" /> Search all {data.label} banks
-      </button>
     </Card>
   );
 }
 
 function ConnectBrokerageCard() {
+  const { open, bind } = useHoverExpand();
   const shown = BROKERAGES.items.slice(0, 5);
-  const more = BROKERAGES.total - shown.length;
   return (
     <Card>
-      <div className="flex items-center justify-between">
-        <Label>
-          <span className="inline-flex items-center gap-1.5">
-            <Building2 className="size-3.5" /> Connect brokerage
-          </span>
-        </Label>
-        <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
-          {BROKERAGES.total}+ platforms
-        </span>
+      <div {...bind} tabIndex={0} className="outline-none">
+        <div className="flex items-center justify-between gap-2">
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 text-[12px] font-semibold">
+              <Building2 className="size-3.5 text-primary" /> Connect brokerage
+            </div>
+            <p className="mt-0.5 truncate text-[10.5px] text-muted-foreground">
+              Auto-sync holdings · {BROKERAGES.total}+ platforms
+            </p>
+          </div>
+          <button
+            onClick={() => startConnect("brokerage", "your brokerage")}
+            className="inline-flex items-center gap-1 rounded-lg bg-primary px-2.5 py-1.5 text-[11px] font-semibold text-primary-foreground shadow-soft hover:bg-primary/90"
+          >
+            Connect <ChevronDown className={`size-3 transition-transform ${open ? "rotate-180" : ""}`} />
+          </button>
+        </div>
+
+        <div
+          className={`grid transition-all duration-200 ease-out ${
+            open ? "mt-2 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+          }`}
+        >
+          <div className="overflow-hidden">
+            <ul className="divide-y divide-border/60 rounded-lg border border-border/60 bg-surface-container-low/60">
+              {shown.map((b) => (
+                <li key={b.n}>
+                  <button
+                    onClick={() => startConnect("brokerage", b.n)}
+                    className="flex w-full items-center gap-2 px-2 py-1.5 text-left text-[11px] font-medium hover:bg-primary/5"
+                  >
+                    <LogoDot {...b} size={18} />
+                    <span className="flex-1 truncate">{b.n}</span>
+                    <ArrowRight className="size-3 text-muted-foreground" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => alert(`Opening full list of ${BROKERAGES.total} supported brokerages…`)}
+              className="mt-1 flex w-full items-center justify-center gap-1 rounded-md py-1 text-[10px] font-medium text-primary hover:bg-primary/5"
+            >
+              <Search className="size-3" /> Search all {BROKERAGES.total} brokerages
+            </button>
+          </div>
+        </div>
       </div>
-      <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
-        Auto-sync holdings for AI drift alerts and tax-loss harvesting.
-      </p>
-      <div className="mt-2 flex items-center gap-1">
-        {shown.map((b) => (
-          <LogoDot key={b.n} {...b} />
-        ))}
-        <span className="grid h-[22px] shrink-0 place-items-center rounded-full border border-dashed border-border px-1.5 text-[10px] font-semibold text-muted-foreground">
-          +{more}
-        </span>
-      </div>
-      <div className="mt-1.5 text-[10px] text-muted-foreground">
-        {shown.map((b) => b.n).join(" · ")}
-      </div>
-      <button className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg bg-primary py-1.5 text-xs font-semibold text-primary-foreground shadow-soft hover:bg-primary/90">
-        Connect via SnapTrade <ArrowRight className="size-3" />
-      </button>
-      <button className="mt-1 flex w-full items-center justify-center gap-1 text-[10px] font-medium text-muted-foreground hover:text-primary">
-        <Search className="size-3" /> Search all supported brokerages
-      </button>
     </Card>
   );
 }
