@@ -450,11 +450,175 @@ function GuestLeft({ onOpenStarter }: { onOpenStarter: (k: StarterKind) => void 
 function GuestRight() {
   return (
     <>
+      <ConnectBankCard />
+      <ConnectBrokerageCard />
       <GuestUsageMeter />
       <TopPerformers />
       <BlogTeaserCard />
       <SavingsGoalCard />
     </>
+  );
+}
+
+/* ---------- Compact connect cards (SnapTrade preview) ---------- */
+
+type LogoChip = { n: string; s: string; c: string };
+
+const BANKS_BY_COUNTRY: Record<"SG" | "AE" | "SA", { flag: string; label: string; total: number; items: LogoChip[] }> = {
+  SG: {
+    flag: "🇸🇬",
+    label: "Singapore",
+    total: 42,
+    items: [
+      { n: "DBS Bank", s: "DBS", c: "#c8102e" },
+      { n: "OCBC Bank", s: "OC", c: "#e30613" },
+      { n: "UOB", s: "UOB", c: "#0b3d91" },
+      { n: "Standard Chartered", s: "SC", c: "#0473ea" },
+      { n: "HSBC", s: "HS", c: "#db0011" },
+      { n: "CIMB", s: "CI", c: "#7a1e2b" },
+    ],
+  },
+  AE: {
+    flag: "🇦🇪",
+    label: "UAE",
+    total: 28,
+    items: [
+      { n: "Emirates NBD", s: "EN", c: "#004990" },
+      { n: "ADCB", s: "AD", c: "#8b1f2f" },
+      { n: "FAB", s: "FA", c: "#003b71" },
+      { n: "Mashreq", s: "MA", c: "#f47b20" },
+      { n: "ADIB", s: "AI", c: "#00674a" },
+      { n: "RAKBANK", s: "RA", c: "#c8102e" },
+    ],
+  },
+  SA: {
+    flag: "🇸🇦",
+    label: "Saudi Arabia",
+    total: 24,
+    items: [
+      { n: "Saudi National Bank", s: "SNB", c: "#005c3c" },
+      { n: "Al Rajhi Bank", s: "AR", c: "#004a2f" },
+      { n: "Riyad Bank", s: "RB", c: "#0a3d91" },
+      { n: "ANB", s: "AN", c: "#8b1f2f" },
+      { n: "Alinma", s: "AL", c: "#f0a419" },
+      { n: "SAB", s: "SA", c: "#0b6cb5" },
+    ],
+  },
+};
+
+const BROKERAGES: { total: number; items: LogoChip[] } = {
+  total: 18,
+  items: [
+    { n: "Robinhood", s: "RH", c: "#00c805" },
+    { n: "Fidelity", s: "FI", c: "#00854a" },
+    { n: "Interactive Brokers", s: "IB", c: "#d31145" },
+    { n: "Coinbase", s: "CB", c: "#0052ff" },
+    { n: "Alpaca", s: "AP", c: "#f5c518" },
+    { n: "Schwab", s: "SC", c: "#00a0df" },
+  ],
+};
+
+function LogoDot({ n, s, c, size = 22 }: LogoChip & { size?: number }) {
+  return (
+    <span
+      title={n}
+      className="grid shrink-0 place-items-center rounded-full text-[9px] font-bold text-white ring-1 ring-white/60"
+      style={{ background: c, width: size, height: size }}
+    >
+      {s}
+    </span>
+  );
+}
+
+function ConnectBankCard() {
+  const [country, setCountry] = useState<"SG" | "AE" | "SA">("SG");
+  const data = BANKS_BY_COUNTRY[country];
+  const shown = data.items.slice(0, 5);
+  const more = data.total - shown.length;
+  return (
+    <Card>
+      <div className="flex items-center justify-between">
+        <Label>
+          <span className="inline-flex items-center gap-1.5">
+            <Landmark className="size-3.5" /> Connect a bank
+          </span>
+        </Label>
+        <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
+          {BANKS_BY_COUNTRY.SG.total + BANKS_BY_COUNTRY.AE.total + BANKS_BY_COUNTRY.SA.total}+ banks
+        </span>
+      </div>
+      <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
+        See balances, cash flow, and net worth in one place.
+      </p>
+      <div className="mt-2 flex gap-1">
+        {(Object.keys(BANKS_BY_COUNTRY) as Array<"SG" | "AE" | "SA">).map((c) => (
+          <button
+            key={c}
+            onClick={() => setCountry(c)}
+            className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold transition ${
+              country === c
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground hover:bg-muted/70"
+            }`}
+          >
+            {BANKS_BY_COUNTRY[c].flag} {c === "AE" ? "UAE" : c === "SA" ? "KSA" : "SG"}
+          </button>
+        ))}
+      </div>
+      <div className="mt-2 flex items-center gap-1">
+        {shown.map((b) => (
+          <LogoDot key={b.n} {...b} />
+        ))}
+        <span className="grid h-[22px] shrink-0 place-items-center rounded-full border border-dashed border-border px-1.5 text-[10px] font-semibold text-muted-foreground">
+          +{more}
+        </span>
+      </div>
+      <button className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg bg-primary py-1.5 text-xs font-semibold text-primary-foreground shadow-soft hover:bg-primary/90">
+        Connect via SnapTrade <ArrowRight className="size-3" />
+      </button>
+      <button className="mt-1 flex w-full items-center justify-center gap-1 text-[10px] font-medium text-muted-foreground hover:text-primary">
+        <Search className="size-3" /> Search all {data.label} banks
+      </button>
+    </Card>
+  );
+}
+
+function ConnectBrokerageCard() {
+  const shown = BROKERAGES.items.slice(0, 5);
+  const more = BROKERAGES.total - shown.length;
+  return (
+    <Card>
+      <div className="flex items-center justify-between">
+        <Label>
+          <span className="inline-flex items-center gap-1.5">
+            <Building2 className="size-3.5" /> Connect brokerage
+          </span>
+        </Label>
+        <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
+          {BROKERAGES.total}+ platforms
+        </span>
+      </div>
+      <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
+        Auto-sync holdings for AI drift alerts and tax-loss harvesting.
+      </p>
+      <div className="mt-2 flex items-center gap-1">
+        {shown.map((b) => (
+          <LogoDot key={b.n} {...b} />
+        ))}
+        <span className="grid h-[22px] shrink-0 place-items-center rounded-full border border-dashed border-border px-1.5 text-[10px] font-semibold text-muted-foreground">
+          +{more}
+        </span>
+      </div>
+      <div className="mt-1.5 text-[10px] text-muted-foreground">
+        {shown.map((b) => b.n).join(" · ")}
+      </div>
+      <button className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg bg-primary py-1.5 text-xs font-semibold text-primary-foreground shadow-soft hover:bg-primary/90">
+        Connect via SnapTrade <ArrowRight className="size-3" />
+      </button>
+      <button className="mt-1 flex w-full items-center justify-center gap-1 text-[10px] font-medium text-muted-foreground hover:text-primary">
+        <Search className="size-3" /> Search all supported brokerages
+      </button>
+    </Card>
   );
 }
 
