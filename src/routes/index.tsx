@@ -47,6 +47,8 @@ import {
   Plane,
   GraduationCap,
   Check,
+  Landmark,
+  Search,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
