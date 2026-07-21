@@ -1198,30 +1198,77 @@ function FantasyPage() {
               </div>
             </section>
 
+            {/* AI Investment Coach */}
             <section className="rounded-2xl border border-primary/20 bg-primary/5 p-4 shadow-soft">
-              <div className="mb-1 flex items-center gap-2 text-primary">
-                <Trophy className="size-4" />
-                <h3 className="text-sm font-bold">Leaderboard</h3>
+              <div className="mb-1 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-primary">
+                  <Bot className="size-4" />
+                  <h3 className="text-sm font-bold">AI Coach · {activeLeague.name}</h3>
+                </div>
+                <span className="rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-bold text-primary">
+                  Rank #{activeLeague.rank || "-"}
+                </span>
               </div>
-              <p className="text-[11px] text-muted-foreground">Top fantasy portfolios this week</p>
+              <p className="text-[11px] text-muted-foreground">
+                What helped, what hurt, and how you compare.
+              </p>
               <div className="mt-3 space-y-2">
+                {COACH_NOTES.map((n, i) => (
+                  <div
+                    key={i}
+                    className="flex gap-2 rounded-lg border border-border/60 bg-background/60 p-2 text-[11px] leading-snug text-foreground"
+                  >
+                    <span
+                      className={`mt-0.5 grid size-4 shrink-0 place-items-center rounded-full ${
+                        n.good ? "bg-primary/15 text-primary" : "bg-amber-100 text-amber-700"
+                      }`}
+                    >
+                      {n.good ? <Check className="size-2.5" /> : <X className="size-2.5" />}
+                    </span>
+                    <span>{n.text}</span>
+                  </div>
+                ))}
+              </div>
+              <button className="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-primary/40 bg-white/60 py-1.5 text-[11px] font-semibold text-primary hover:bg-primary/10">
+                <Activity className="size-3" /> Full performance report
+              </button>
+            </section>
+
+            <section className="rounded-2xl border border-border/70 bg-card/80 p-4 shadow-soft">
+              <div className="mb-2 flex items-center gap-2">
+                <Trophy className="size-4 text-primary" />
+                <h3 className="text-sm font-bold text-foreground">Global · this week</h3>
+              </div>
+              <div className="space-y-1.5">
                 {[
                   { rank: 1, name: "@quant_kate", return: 48.2 },
                   { rank: 2, name: "@marco_ai", return: 41.7 },
-                  { rank: 3, name: "You · AI Supercycle", return: 34.2 },
+                  { rank: 3, name: "You · AI Supercycle", return: 34.2, you: true },
                 ].map((r) => (
-                  <div key={r.rank} className="flex items-center justify-between text-xs">
+                  <div
+                    key={r.rank}
+                    className={`flex items-center justify-between rounded-md px-1.5 py-1 text-xs ${
+                      r.you ? "bg-primary/10" : ""
+                    }`}
+                  >
                     <span className="flex items-center gap-2">
                       <span className="grid size-5 place-items-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
                         {r.rank}
                       </span>
-                      <span className="font-medium text-foreground">{r.name}</span>
+                      <span className={`font-medium ${r.you ? "text-primary" : "text-foreground"}`}>{r.name}</span>
                     </span>
                     <span className="font-semibold text-primary">+{r.return}%</span>
                   </div>
                 ))}
               </div>
+              <Link
+                to="/fantasy"
+                className="mt-2 inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:underline"
+              >
+                See full leaderboard <ChevronRight className="size-3" />
+              </Link>
             </section>
+
           </aside>
         </div>
 
