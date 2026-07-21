@@ -319,6 +319,19 @@ function FantasyPage() {
   const [amount, setAmount] = useState(5000);
   const [monthly, setMonthly] = useState(200);
 
+  // Trade desk state (virtual buy/sell)
+  const [cash, setCash] = useState(3820.5);
+  const [positions, setPositions] = useState<Position[]>(INITIAL_POSITIONS);
+  const [tradeTicker, setTradeTicker] = useState("AAPL");
+  const [tradeQty, setTradeQty] = useState(1);
+  const [tradeSide, setTradeSide] = useState<"buy" | "sell">("buy");
+  const [toast, setToast] = useState<string | null>(null);
+
+  // League + leaderboard state
+  const [activeLeagueId, setActiveLeagueId] = useState<string>(LEAGUES[0].id);
+  const [category, setCategory] = useState<LeaderboardCategory>("return");
+  const [showCreate, setShowCreate] = useState(false);
+
   const strat = STRATEGIES.find((s) => s.id === strategy)!;
   const years = PERIODS.find((p) => p.id === period)!.years;
 
@@ -331,12 +344,65 @@ function FantasyPage() {
   const gain = projected - invested;
   const vsSp = projected - sp500;
 
+  const activeLeague = LEAGUES.find((l) => l.id === activeLeagueId)!;
+  const holdingsValue = positions.reduce((a, p) => a + p.qty * p.last, 0);
+  const bookValue = cash + holdingsValue;
+  const totalPnl = positions.reduce((a, p) => a + p.qty * (p.last - p.avg), 0);
+
   function applyPreset(p: { amount: number; strategy: Strategy; period: Period; monthly: number }) {
     setAmount(p.amount);
     setStrategy(p.strategy);
     setPeriod(p.period);
     setMonthly(p.monthly);
   }
+
+  function lookupPrice(ticker: string) {
+    const w = WATCHLIST.find((x) => x.ticker === ticker);
+    if (w) return { name: w.name, price: w.last };
+    const pos = positions.find((x) => x.ticker === ticker);
+    if (pos) return { name: pos.name, price: pos.last };
+    return { name: ticker, price: 100 };
+  }
+
+  function executeTrade() {
+    const { name, price } = lookupPrice(tradeTicker.toUpperCase());
+    const total = price * tradeQty;
+    if (tradeSide === "buy") {
+      if (cash < total) {
+        setToast("Not enough virtual cash");
+        return;
+      }
+      setCash((c) => c - total);
+      setPositions((ps) => {
+        const found = ps.find((p) => p.ticker === tradeTicker.toUpperCase());
+        if (found) {
+          const newQty = found.qty + tradeQty;
+          const newAvg = (found.avg * found.qty + total) / newQty;
+          return ps.map((p) =>
+            p.ticker === found.ticker ? { ...p, qty: newQty, avg: Number(newAvg.toFixed(2)) } : p,
+          );
+        }
+        return [...ps, { ticker: tradeTicker.toUpperCase(), name, qty: tradeQty, avg: price, last: price }];
+      });
+      setToast(`Bought ${tradeQty} ${tradeTicker.toUpperCase()} @ ${usd(price)}`);
+    } else {
+      const found = positions.find((p) => p.ticker === tradeTicker.toUpperCase());
+      if (!found || found.qty < tradeQty) {
+        setToast("Not enough shares to sell");
+        return;
+      }
+      setCash((c) => c + total);
+      setPositions((ps) =>
+        ps
+          .map((p) => (p.ticker === found.ticker ? { ...p, qty: p.qty - tradeQty } : p))
+          .filter((p) => p.qty > 0),
+      );
+      setToast(`Sold ${tradeQty} ${tradeTicker.toUpperCase()} @ ${usd(price)}`);
+    }
+    setTimeout(() => setToast(null), 2500);
+  }
+
+
 
   return (
     <div className="min-h-screen bg-background">
