@@ -145,6 +145,132 @@ const TRENDING = [
   "What if I sold BTC at the last peak?",
 ];
 
+/* ---- Leagues, trade desk, coach data ---- */
+
+type LeagueKind = "public" | "private";
+type League = {
+  id: string;
+  name: string;
+  kind: LeagueKind;
+  starts: string;
+  endsInDays: number;
+  totalDays: number;
+  players: number;
+  buyIn: number; // virtual
+  rank: number;
+  totalReturn: number; // %
+  vsMkt: number; // %
+  status: "live" | "upcoming";
+};
+
+const LEAGUES: League[] = [
+  {
+    id: "spring-global",
+    name: "Spring Global Open",
+    kind: "public",
+    starts: "Mar 1",
+    endsInDays: 12,
+    totalDays: 30,
+    players: 4820,
+    buyIn: 10000,
+    rank: 214,
+    totalReturn: 12.4,
+    vsMkt: 4.1,
+    status: "live",
+  },
+  {
+    id: "friends-4",
+    name: "Friday Night Traders",
+    kind: "private",
+    starts: "Mar 8",
+    endsInDays: 4,
+    totalDays: 14,
+    players: 6,
+    buyIn: 5000,
+    rank: 2,
+    totalReturn: 8.7,
+    vsMkt: 2.9,
+    status: "live",
+  },
+  {
+    id: "campus-nus",
+    name: "NUS Investing Club",
+    kind: "private",
+    starts: "Mar 15",
+    endsInDays: 0,
+    totalDays: 60,
+    players: 148,
+    buyIn: 25000,
+    rank: 0,
+    totalReturn: 0,
+    vsMkt: 0,
+    status: "upcoming",
+  },
+];
+
+type LeaderboardCategory = "return" | "vsmkt" | "sharpe" | "drawdown" | "risk";
+const CATEGORIES: { id: LeaderboardCategory; label: string; icon: any; hint: string }[] = [
+  { id: "return", label: "Highest return", icon: TrendingUp, hint: "Raw % since league start" },
+  { id: "vsmkt", label: "Beats the market", icon: Zap, hint: "Alpha vs S&P 500" },
+  { id: "sharpe", label: "Best risk-adjusted", icon: Gauge, hint: "Sharpe ratio" },
+  { id: "drawdown", label: "Lowest drawdown", icon: Shield, hint: "Smallest peak-to-trough loss" },
+  { id: "risk", label: "Bold portfolios", icon: Flame, hint: "High conviction plays" },
+];
+
+const CATEGORY_ROWS: Record<LeaderboardCategory, { rank: number; name: string; you?: boolean; metric: string }[]> = {
+  return: [
+    { rank: 1, name: "@quant_kate", metric: "+48.2%" },
+    { rank: 2, name: "@marco_ai", metric: "+41.7%" },
+    { rank: 3, name: "You · AI Supercycle", you: true, metric: "+34.2%" },
+    { rank: 4, name: "@dividend_dan", metric: "+29.1%" },
+  ],
+  vsmkt: [
+    { rank: 1, name: "@alpha_amy", metric: "+22.4% α" },
+    { rank: 2, name: "You · AI Supercycle", you: true, metric: "+18.9% α" },
+    { rank: 3, name: "@marco_ai", metric: "+15.2% α" },
+    { rank: 4, name: "@quant_kate", metric: "+12.0% α" },
+  ],
+  sharpe: [
+    { rank: 1, name: "@steady_sam", metric: "2.14" },
+    { rank: 2, name: "@dividend_dan", metric: "1.97" },
+    { rank: 3, name: "You · Dividend Machine", you: true, metric: "1.82" },
+    { rank: 4, name: "@quant_kate", metric: "1.71" },
+  ],
+  drawdown: [
+    { rank: 1, name: "@steady_sam", metric: "-3.1%" },
+    { rank: 2, name: "You · Dividend Machine", you: true, metric: "-4.4%" },
+    { rank: 3, name: "@bond_beth", metric: "-5.0%" },
+    { rank: 4, name: "@dividend_dan", metric: "-6.2%" },
+  ],
+  risk: [
+    { rank: 1, name: "@yolo_yuri", metric: "82 conviction" },
+    { rank: 2, name: "You · BTC Max", you: true, metric: "78 conviction" },
+    { rank: 3, name: "@marco_ai", metric: "71 conviction" },
+    { rank: 4, name: "@alpha_amy", metric: "68 conviction" },
+  ],
+};
+
+type Position = { ticker: string; name: string; qty: number; avg: number; last: number };
+const INITIAL_POSITIONS: Position[] = [
+  { ticker: "NVDA", name: "NVIDIA", qty: 4, avg: 720.5, last: 895.4 },
+  { ticker: "MSFT", name: "Microsoft", qty: 6, avg: 402.1, last: 428.1 },
+  { ticker: "VTI", name: "Vanguard Total Market", qty: 12, avg: 248.7, last: 262.3 },
+];
+const WATCHLIST = [
+  { ticker: "AAPL", name: "Apple", last: 224.8, chg: 0.9 },
+  { ticker: "GOOGL", name: "Alphabet", last: 178.5, chg: -0.4 },
+  { ticker: "TSLA", name: "Tesla", last: 245.6, chg: -1.2 },
+  { ticker: "AMD", name: "AMD", last: 162.7, chg: 3.2 },
+];
+
+const COACH_NOTES = [
+  { good: true, text: "Adding NVDA on Mar 3 captured a +12% run — biggest single contributor this week." },
+  { good: false, text: "Sitting 38% in cash cost ~$180 in missed upside vs. staying invested." },
+  { good: true, text: "Your portfolio's Sharpe (1.82) beats the league median (1.41)." },
+  { good: false, text: "Concentration risk: top 2 names are 65% of book. A 15% NVDA drop erases 2 weeks of gains." },
+];
+
+
 /* ---------- helpers ---------- */
 
 function projectValue(amount: number, monthly: number, annual: number, years: number) {
