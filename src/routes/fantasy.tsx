@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import {
   Sparkles,
   TrendingUp,
+  TrendingDown,
   Wallet,
   Plus,
   ArrowRight,
@@ -15,7 +16,24 @@ import {
   Target,
   Flame,
   BarChart3,
+  Users,
+  Lock,
+  Globe,
+  Clock,
+  Copy,
+  Share2,
+  Shield,
+  Award,
+  Activity,
+  Link2,
+  Check,
+  X,
+  ChevronRight,
+  UserPlus,
+  Crown,
+  Gauge,
 } from "lucide-react";
+
 
 export const Route = createFileRoute("/fantasy")({
   head: () => ({
